@@ -8,6 +8,14 @@ object ShopListRepositoryImpl: ShopListRepository {
     private val shopList = mutableListOf<ShopItem>()
     private var autoIncrementId = 0
 
+    init {
+        // добавления случайных элементов при инициализации
+        for(i in 0 until 10) {
+            val item = ShopItem("Name $i", i, true)
+            addShopList(item)
+        }
+    }
+
     // Добавления элемента
     override fun addShopList(shopItem: ShopItem) {
         // Если элемент ещё не был определен
