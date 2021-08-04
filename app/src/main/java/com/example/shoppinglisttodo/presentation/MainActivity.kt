@@ -9,6 +9,7 @@ import com.example.shoppinglisttodo.R
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewMode: MainViewModel
+    private var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 //        viewMode = ViewModelProvider(this).get(MainViewModel::class.java)
         viewMode.shopList.observe(this) {
             Log.d("MainViewModelTest",  it.toString())
+            if (count == 0) {
+                val item = it[0]
+                viewMode.deleteShopItem(item)
+                count++
+            }
         }
 
     }
