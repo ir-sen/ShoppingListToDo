@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         viewMode.shopList.observe(this) {
             Log.d("MainViewModelTest",  it.toString())
         }
-        viewMode.getShopList()
 
     }
 }
