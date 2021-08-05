@@ -1,5 +1,6 @@
 package com.example.shoppinglisttodo.presentation
 
+import android.content.ClipData
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglisttodo.R
 import com.example.shoppinglisttodo.data.ShopListRepositoryImpl
@@ -47,15 +49,47 @@ class MainActivity : AppCompatActivity() {
             )
         }
         // изменения данноо элемента через анонимный класс
-        shopListAdapter.onShopItemLongClickListener =  {
-            viewMode.changeEnableState(it)
-        }
+        setupLongClickListener()
+        setupClickListener()
 
+        setupSwipeListener(rvShopList)
+    }
+
+    private fun setupSwipeListener(rvShopList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // получения элемента который мы свайпнули
+                val item = shopListAdapter.shopList[viewHolder.adapterPosition]
+                viewMode.deleteShopItem(item)
+
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rvShopList)
+    }
+
+    private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
             Log.d("Click", it.toString())
         }
     }
 
+    private fun setupLongClickListener() {
+        shopListAdapter.onShopItemLongClickListener = {
+            viewMode.changeEnableState(it)
+        }
+    }
 
 
 }
