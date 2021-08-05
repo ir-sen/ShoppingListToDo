@@ -27,7 +27,12 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     // присваеваем к каждому элементу значения
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
         val shopItem = shopList[position]
-        viewHolder.tvName.text = shopItem.name
+        val status = if (shopItem.enable) {
+            "Active"
+        } else {
+            "Not active"
+        }
+        viewHolder.tvName.text = "${shopItem.name} $status"
         viewHolder.tvCount.text = shopItem.count.toString()
         viewHolder.view.setOnLongClickListener {
             true
