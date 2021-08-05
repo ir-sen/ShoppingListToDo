@@ -21,6 +21,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
      // организация OnShop Click Listener как на java
     //var onShopItemLongClickListener: OnShopItemLongClickListener? = null
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
 
     // из layout получаем view
@@ -44,6 +45,11 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
             onShopItemLongClickListener?.invoke(shopItem)
             true
         }
+
+        viewHolder.view.setOnClickListener{
+            onShopItemClickListener?.invoke(shopItem)
+        }
+
         viewHolder.tvName.text = shopItem.name
         viewHolder.tvCount.text = shopItem.count.toString()
 
@@ -80,8 +86,11 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     // для установления слушателя на кнопку
     interface OnShopItemLongClickListener{
-
         fun onShopItemLongClick(shopItem: ShopItem)
+    }
+
+    interface OnClickItemListener{
+        fun onClickItemListener(shopItem: ShopItem)
     }
 
     companion object{

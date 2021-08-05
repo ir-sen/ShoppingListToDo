@@ -50,6 +50,10 @@ class MainActivity : AppCompatActivity() {
         shopListAdapter.onShopItemLongClickListener =  {
             viewMode.changeEnableState(it)
         }
+
+        shopListAdapter.onShopItemClickListener = {
+            Log.d("Click", it.toString())
+        }
     }
 
 
