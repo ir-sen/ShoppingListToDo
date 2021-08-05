@@ -41,6 +41,10 @@ class MainActivity : AppCompatActivity() {
             val tvCount = view.findViewById<TextView>(R.id.tv_count)
             tvName.text = shopItem.name
             tvCount.text = shopItem.count.toString()
+            view.setOnLongClickListener {
+                viewMode.changeEnableState(shopItem)
+                true
+            }
 
             llShopList.addView(view)
 
