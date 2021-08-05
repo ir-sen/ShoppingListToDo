@@ -47,11 +47,8 @@ class MainActivity : AppCompatActivity() {
             )
         }
         // изменения данноо элемента через анонимный класс
-        shopListAdapter.onShopItemLongClickListener = object : ShopListAdapter.OnShopItemLongClickListener {
-            override fun onShopItemLongClick(shopItem: ShopItem) {
-                viewMode.changeEnableState(shopItem)
-            }
-
+        shopListAdapter.onShopItemLongClickListener =  {
+            viewMode.changeEnableState(it)
         }
     }
 

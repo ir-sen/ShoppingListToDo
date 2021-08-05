@@ -19,8 +19,8 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         notifyDataSetChanged()
     }
      // организация OnShop Click Listener как на java
-    var onShopItemLongClickListener: OnShopItemLongClickListener? = null
-    //var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    //var onShopItemLongClickListener: OnShopItemLongClickListener? = null
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
 
 
     // из layout получаем view
@@ -41,7 +41,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         val shopItem = shopList[position]
         // слушатель при полгом нажатии
         viewHolder.view.setOnLongClickListener {
-            onShopItemLongClickListener?.onShopItemLongClick(shopItem)
+            onShopItemLongClickListener?.invoke(shopItem)
             true
         }
         viewHolder.tvName.text = shopItem.name
