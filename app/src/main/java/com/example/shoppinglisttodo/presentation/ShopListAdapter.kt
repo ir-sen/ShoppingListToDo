@@ -51,12 +51,12 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         }
     }
     // вызывается в момен переиспользования  View holder
-    override fun onViewRecycled(viewHolder: ShopItemViewHolder) {
-        super.onViewRecycled(viewHolder)
-        viewHolder.tvName.text = ""
-        viewHolder.tvCount.text = ""
-        viewHolder.tvName.setTextColor(ContextCompat.getColor(viewHolder.view.context, android.R.color.white))
-    }
+//    override fun onViewRecycled(viewHolder: ShopItemViewHolder) {
+//        super.onViewRecycled(viewHolder)
+//        viewHolder.tvName.text = ""
+//        viewHolder.tvCount.text = ""
+//        viewHolder.tvName.setTextColor(ContextCompat.getColor(viewHolder.view.context, android.R.color.white))
+//    }
 
     // second way fix scroll bug
 
