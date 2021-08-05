@@ -22,9 +22,12 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     // из layout получаем view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         Log.d("ShopListAdapter", "onCreateViewHolder count = ${++count}")
-        val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.item_shop_disabled,
-            parent, false)
+        val layout = when(viewType) {
+            VIEW_TYPE_DISABLED -> R.layout.item_shop_disabled
+            VIEW_TYPE_ENABLED -> R.layout.item_shop_enabled
+            else -> throw RuntimeException("Unknown view type: $viewType")
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ShopItemViewHolder(view)
     }
 
@@ -40,32 +43,28 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         viewHolder.view.setOnLongClickListener {
             true
         }
+        viewHolder.tvName.text = shopItem.name
+        viewHolder.tvCount.text = shopItem.count.toString()
 
-        if (shopItem.enable) {
-            viewHolder.tvName.text = "${shopItem.name} $status"
-            viewHolder.tvCount.text = shopItem.count.toString()
-            viewHolder.tvName.setTextColor(ContextCompat.getColor(viewHolder.view.context, android.R.color.holo_red_light))
-        } else {
-            // first way fix scroll bug
-            viewHolder.tvName.text = ""
-            viewHolder.tvCount.text = ""
-            viewHolder.tvName.setTextColor(ContextCompat.getColor(viewHolder.view.context, android.R.color.white))
-
-        }
     }
     // вызывается в момен переиспользования  View holder
-//    override fun onViewRecycled(viewHolder: ShopItemViewHolder) {
-//        super.onViewRecycled(viewHolder)
-//        viewHolder.tvName.text = ""
-//        viewHolder.tvCount.text = ""
-//        viewHolder.tvName.setTextColor(ContextCompat.getColor(viewHolder.view.context, android.R.color.white))
-//    }
+    override fun onViewRecycled(viewHolder: ShopItemViewHolder) {
+        super.onViewRecycled(viewHolder)
+        viewHolder.tvName.text = ""
+        viewHolder.tvCount.text = ""
+        viewHolder.tvName.setTextColor(ContextCompat.getColor(viewHolder.view.context, android.R.color.white))
+    }
 
     // second way fix scroll bug
-
-//    override fun getItemViewType(position: Int): Int {
-//        return super.getItemViewType(position)
-//    }
+// определяет тип view
+    override fun getItemViewType(position: Int): Int {
+        val item = shopList[position]
+        return if (item.enable) {
+            VIEW_TYPE_ENABLED
+        } else {
+            VIEW_TYPE_DISABLED
+        }
+    }
 
 
     override fun getItemCount(): Int {
@@ -76,5 +75,11 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         val tvName = view.findViewById<TextView>(R.id.tv_name)
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
 
+    }
+
+    companion object{
+
+        const val VIEW_TYPE_ENABLED = 100
+        const val VIEW_TYPE_DISABLED = 101
     }
 }
