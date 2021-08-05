@@ -1,5 +1,6 @@
 package com.example.shoppinglisttodo.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.example.shoppinglisttodo.domain.ShopItem
 
 class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
+    var count = 0
     var shopList = listOf<ShopItem>()
     set(value) {
         field = value
@@ -19,6 +21,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     // из layout получаем view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
+        Log.d("ShopListAdapter", "onCreateViewHolder count = ${++count}")
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.item_shop_disabled,
             parent, false)
@@ -59,6 +62,10 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 //    }
 
     // second way fix scroll bug
+
+//    override fun getItemViewType(position: Int): Int {
+//        return super.getItemViewType(position)
+//    }
 
 
     override fun getItemCount(): Int {
