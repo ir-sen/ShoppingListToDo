@@ -46,8 +46,15 @@ class MainActivity : AppCompatActivity() {
                 ShopListAdapter.MAX_POOL_SIZE
             )
         }
+        // изменения данноо элемента через анонимный класс
+        shopListAdapter.onShopItemLongClickListener = object : ShopListAdapter.OnShopItemLongClickListener {
+            override fun onShopItemLongClick(shopItem: ShopItem) {
+                viewMode.changeEnableState(shopItem)
+            }
 
+        }
     }
+
 
 
 }

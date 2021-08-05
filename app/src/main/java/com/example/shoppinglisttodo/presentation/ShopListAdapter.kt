@@ -18,6 +18,10 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         field = value
         notifyDataSetChanged()
     }
+     // организация OnShop Click Listener как на java
+    var onShopItemLongClickListener: OnShopItemLongClickListener? = null
+    //var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+
 
     // из layout получаем view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
@@ -35,12 +39,9 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     // (Вызывается для каждого элемента)
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
         val shopItem = shopList[position]
-        val status = if (shopItem.enable) {
-            "Active"
-        } else {
-            "Not active"
-        }
+        // слушатель при полгом нажатии
         viewHolder.view.setOnLongClickListener {
+            onShopItemLongClickListener?.onShopItemLongClick(shopItem)
             true
         }
         viewHolder.tvName.text = shopItem.name
@@ -75,6 +76,12 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
         val tvName = view.findViewById<TextView>(R.id.tv_name)
         val tvCount = view.findViewById<TextView>(R.id.tv_count)
 
+    }
+
+    // для установления слушателя на кнопку
+    interface OnShopItemLongClickListener{
+
+        fun onShopItemLongClick(shopItem: ShopItem)
     }
 
     companion object{
