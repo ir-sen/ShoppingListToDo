@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglisttodo.R
+import com.example.shoppinglisttodo.data.ShopListRepositoryImpl
 import com.example.shoppinglisttodo.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +35,11 @@ class MainActivity : AppCompatActivity() {
         val rvShopList = findViewById<RecyclerView>(R.id.rv_shop_list)
         adapter = ShopListAdapter()
         rvShopList.adapter = adapter
+        // для создания определенного количество viewHolder что-бы не создавать множество viewHolder
+        rvShopList.recycledViewPool.setMaxRecycledViews(ShopListAdapter.VIEW_TYPE_ENABLED,
+            ShopListAdapter.MAX_POOL_SIZE)
+        rvShopList.recycledViewPool.setMaxRecycledViews(ShopListAdapter.VIEW_TYPE_DISABLED,
+            ShopListAdapter.MAX_POOL_SIZE)
 
     }
 
