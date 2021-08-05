@@ -10,17 +10,23 @@ import com.example.shoppinglisttodo.domain.ShopItem
 
 class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>() {
 
-    val list = listOf<ShopItem>()
+    var shopList = listOf<ShopItem>()
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
 
     // из layout получаем view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_shop_disabled, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.item_shop_disabled,
+            parent, false)
         return ShopItemViewHolder(view)
     }
 
     // присваеваем к каждому элементу значения
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
-        val shopItem = list[position]
+        val shopItem = shopList[position]
         viewHolder.tvName.text = shopItem.name
         viewHolder.tvCount.text = shopItem.count.toString()
         viewHolder.view.setOnLongClickListener {
@@ -29,7 +35,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return shopList.size
     }
     // Берем все view которые нам нужны
     class ShopItemViewHolder(val view: View): RecyclerView.ViewHolder(view){
