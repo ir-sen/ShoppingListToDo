@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglisttodo.R
 import com.example.shoppinglisttodo.domain.ShopItem
@@ -14,9 +15,15 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     var count = 0
     var shopList = listOf<ShopItem>()
+        // set кода мы устанавливаем новое значения
     set(value) {
+        // для сравнения старого и нового списка
+        val callback = ShopListDiffCallback(shopList, value)
+            // Метод вычесления что измменилось (производит вычесления)
+        val diffResult = DiffUtil.calculateDiff(callback)
+            // Передача действий адаптеру
+        diffResult.dispatchUpdatesTo(this)
         field = value
-        notifyDataSetChanged()
     }
      // организация OnShop Click Listener как на java
     //var onShopItemLongClickListener: OnShopItemLongClickListener? = null
@@ -26,7 +33,6 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
 
     // из layout получаем view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
-        Log.d("ShopListAdapter", "onCreateViewHolder count = ${++count}")
         val layout = when(viewType) {
             VIEW_TYPE_DISABLED -> R.layout.item_shop_disabled
             VIEW_TYPE_ENABLED -> R.layout.item_shop_enabled
@@ -39,6 +45,7 @@ class ShopListAdapter: RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>(
     // присваеваем к каждому элементу значения
     // (Вызывается для каждого элемента)
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
+        Log.d("ShopListAdapter", "onBindViewHolder count = ${++count}")
         val shopItem = shopList[position]
         // слушатель при полгом нажатии
         viewHolder.view.setOnLongClickListener {
