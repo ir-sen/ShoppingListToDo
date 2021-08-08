@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">ShoppingListToDo</string>
     <string name="add_shop_item_content_description">Add shop item content</string>
+
+    <string name="error_input_count">Error input count</string>
+    <string name="error_input_name">Error input name</string>
     <string name="name">Name:</string>
     <string name="count">Count:</string>
     <string name="save">Save</string>
