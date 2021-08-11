@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = ShopItemActivity.newIntentAddItem(this)
                 startActivity(intent)
             } else {
-                launchFragment(ShopItemFragment.newInstanceAddItem())
+                launchFragment(ShopItemFragment.newInstanceAddItem(), "add")
             }
 //            intent.putExtra(EXTRA_SCREEN_MODE, MODE_ADD)
 
@@ -47,12 +48,19 @@ class MainActivity : AppCompatActivity() {
     private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }
+    // Функция вызывается при нажатии кнопки назад
+    override fun onBackPressed() {
+        // Удаления фрагмента до add
+        supportFragmentManager.popBackStack("add", 0)
+            // Удаления всех фрагментова из стека
+        supportFragmentManager.popBackStack("add", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-    private fun launchFragment(fragment: Fragment) {
-        supportFragmentManager.popBackStack()
+    }
+
+    private fun launchFragment(fragment: Fragment, name: String) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.shop_item_container, fragment)
-            .addToBackStack(null)
+            .addToBackStack(name)
             .commit()
     }
 
@@ -108,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = ShopItemActivity.newIntentEditItem(this, it.id)
                 startActivity(intent)
             } else {
-                launchFragment(ShopItemFragment.newInstanceEditItem(it.id))
+                launchFragment(ShopItemFragment.newInstanceEditItem(it.id), "edit")
             }
             //intent.putExtra(EXTRA_SCREEN_MODE, MODE_EDIT)
         }
