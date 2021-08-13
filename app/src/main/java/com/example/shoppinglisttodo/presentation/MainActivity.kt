@@ -1,7 +1,9 @@
 package com.example.shoppinglisttodo.presentation
 
 import android.os.Bundle
+import android.os.TokenWatcher
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -11,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglisttodo.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewMode: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -44,15 +46,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onEditingFinished() {
+        Toast.makeText(this@MainActivity, "Success" , Toast.LENGTH_SHORT).show()
+        supportFragmentManager.popBackStack()
+    }
+
+
+
     private fun isOnePaneMode(): Boolean {
         return shopItemContainer == null
     }
 
     private fun launchFragment(fragment: Fragment) {
-        supportFragmentManager.popBackStack()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container, fragment)
-            .addToBackStack(null)
+            .add(R.id.shop_item_container, fragment)
             .commit()
     }
 
