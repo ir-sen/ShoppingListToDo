@@ -1,5 +1,7 @@
 package com.example.shoppinglisttodo.domain
 
+
+
 data class ShopItem(
     val name: String,
     val count: Int,
