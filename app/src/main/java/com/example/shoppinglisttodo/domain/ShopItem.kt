@@ -10,7 +10,7 @@ data class ShopItem(
 
     companion object {
         // Метка не определенного id
-        const val UNDEFINED_ID = -1
+        const val UNDEFINED_ID = 0
     }
 
 }
