@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 // View model не должен зависит от data layer
 import com.example.shoppinglisttodo.data.ShopListRepositoryImpl
 import com.example.shoppinglisttodo.domain.*
@@ -21,7 +22,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val deleteShopItemUseCase = DeleteShopItemUseCase(repository)
     private val editShopItemUseCase = EditShopItemUseCase(repository)
 
-    private val scope = CoroutineScope(Dispatchers.IO)
 
         // Взаимодействия с live data
     val shopList = getShopListUseCase.getShopList()
@@ -30,20 +30,17 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
 
     fun deleteShopItem(shopItem: ShopItem) {
-        scope.launch {
+        viewModelScope.launch {
             deleteShopItemUseCase.deleteShopItem(shopItem)
         }
     }
 
     fun changeEnableState(shopItem: ShopItem) {
-        scope.launch {
+        viewModelScope.launch {
             val newItem = shopItem.copy(enable = !shopItem.enable)
             editShopItemUseCase.editShopItem(newItem)
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
-    }
+
 }
